@@ -40,7 +40,7 @@ function RightAntiJoin(input1, input2) {
     };
 
     this.copy = function() {
-        return new LeftSemiJoin(this.input1.copy(), this.input2.copy());
+        return new RightAntiJoin(this.input1.copy(), this.input2.copy());
     };
 
     this.toHTML = function(options) {

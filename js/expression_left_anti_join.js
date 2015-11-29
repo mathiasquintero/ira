@@ -38,7 +38,7 @@ function LeftAntiJoin(input1, input2) {
     };
 
     this.copy = function() {
-        return new LeftSemiJoin(this.input1.copy(), this.input2.copy());
+        return new LeftAntiJoin(this.input1.copy(), this.input2.copy());
     };
 
     this.toHTML = function(options) {

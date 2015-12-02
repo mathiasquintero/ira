@@ -224,6 +224,30 @@ function addRightSemiJoin() {
     updateDisplay(true);
 }
 
+function addLeftAntiJoin() {
+    saveHistory();
+    var rel = wrapAroundCheck();
+    if (rel === null) return;
+    // not a Relation if this happens
+    Object.extend(currentBlock,
+    addBlock(new LeftAntiJoin(
+    leftSide() ? addBlock(rel, true) : addBlock(new Relation()),
+    leftSide() ? addBlock(new Relation()) : addBlock(rel, true))));
+    updateDisplay(true);
+}
+
+function addRightAntiJoin() {
+    saveHistory();
+    var rel = wrapAroundCheck();
+    if (rel === null) return;
+    // not a Relation if this happens
+    Object.extend(currentBlock,
+    addBlock(new RightAntiJoin(
+    leftSide() ? addBlock(rel, true) : addBlock(new Relation()),
+    leftSide() ? addBlock(new Relation()) : addBlock(rel, true))));
+    updateDisplay(true);
+}
+
 function addOuterJoin() {
     saveHistory();
     var rel = wrapAroundCheck();

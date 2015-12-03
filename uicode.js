@@ -42,11 +42,14 @@ function getRelationsFromStorage() {
         */
         var itemAsRegularObject = savesAsArray[i][1];
         var expression = {
-          text: savesAsArray[i][2],
-          toLatex: function(options) {
-            return expression.text;
+          init: function(text) {
+            this.text = text;
+            this.toLatex = function(options) {
+              return this.text;
+            };
+            return this;
           }
-        };
+        }.init(savesAsArray[i][2]);
         console.log(expression.toLatex());
         var item = new DataRelation(
     			itemAsRegularObject.name,

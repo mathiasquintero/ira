@@ -26,26 +26,36 @@ inlineUserDefinedRelations = false;
   It's pretty much a hack on top of a hack.
 */
 
-function getSaves() {
+function getRelationsFromStorage() {
   try {
-    var storaged = window.localStorage.getItem("tables");
+    var objectFromStorage = window.localStorage.getItem("tables");
     /*
       Double parse, because localStorage reads the array as a string and the objects
       again as a string and for some reason parsing once is not enough...
     */
-    var savesAsArray = JSON.parse(JSON.parse(storaged));
+    var savesAsArray = JSON.parse(JSON.parse(objectFromStorage));
     if (Array.isArray(savesAsArray)) {
       for (var i=0;i<savesAsArray.length;i++) {
         /*
           Without this parsing and recreating of the object it
           will think it's an empty relation and return nothing.
         */
-        var itemWithOutCast = savesAsArray[i][1];
+        var itemAsRegularObject = savesAsArray[i][1];
+        var expression = {
+          init: function(text) {
+            this.text = text;
+            this.toLatex = function(options) {
+              return this.text;
+            };
+            return this;
+          }
+        }.init(savesAsArray[i][2]);
+        console.log(expression.toLatex());
         var item = new DataRelation(
-    			itemWithOutCast.name,
-    			itemWithOutCast.columns,
-    			itemWithOutCast.data,
-    			itemWithOutCast.expression
+    			itemAsRegularObject.name,
+    			itemAsRegularObject.columns,
+    			itemAsRegularObject.data,
+    			expression
     		);
         saves.set(savesAsArray[i][0],item);
       }
@@ -55,12 +65,13 @@ function getSaves() {
   }
 }
 
-function saveSaves() {
+function saveRelationsToStorage() {
   var savesAsArray = [];
   saves.each(function(kvp) {
       var key = kvp.key;
       var table = kvp[1];
-      var tuple = [key, table];
+      var inlineLatex = kvp[1].toLatex({inline: true});
+      var tuple = [key, table, inlineLatex];
       savesAsArray.push(tuple);
   });
   window.localStorage.setItem("tables", JSON.stringify(savesAsArray));
@@ -68,7 +79,7 @@ function saveSaves() {
 
 function removeFromSaves(name) {
   saves.unset(name);
-  saveSaves();
+  saveRelationsToStorage();
   reset();
 }
 
@@ -93,7 +104,7 @@ function save(name) {
 			expression
 		)
     );
-    saveSaves();
+    saveRelationsToStorage();
     reset();
 }
 
@@ -598,4 +609,4 @@ function toggleInlineUserDefinedRelations(){
 	updateDisplay(reset);
 }
 
-getSaves();
+getRelationsFromStorage();

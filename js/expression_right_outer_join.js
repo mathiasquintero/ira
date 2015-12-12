@@ -28,16 +28,16 @@ function RightOuterJoin(input1, input2) {
 
     this.copy = function() {
         return new RightOuterJoin(this.input1.copy(), this.input2.copy());
-    }
+    };
 
     this.toHTML = function(options) {
         var display = '';
         display += '(' + this.getInput1().toHTML(options) + " " + latex(symbol) + " " + this.getInput2().toHTML(options) + ")";
         return display;
-    }
+    };
 
     this.toLatex = function(options) {
         return "(" + this.getInput1().toLatex(options) + symbol + this.getInput2().toLatex(options) + ")";
-    }
+    };
 }
 RightOuterJoin.prototype = new Join;

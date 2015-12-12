@@ -35,12 +35,12 @@ function ConditionalRightSemiJoin(condition, input1, input2) {
 
     this.getResult = function() {
       if (this.condition.isEmpty()) return (new ConditionalJoin(this.condition, this.input1, this.input2)).getResult();
-        var r = new Projection(this.input2.getColumns().join(","), new ConditionalJoin(this.condition, this.input1, this.input2));
+        var r = new ConditionalLeftSemiJoin(this.condition, this.input2, this.input1);
         return r.getResult();
     };
 
     this.copy = function() {
-        return new ConditionalRightSemiJoin(this.input1.copy(), this.input2.copy());
+        return new ConditionalRightSemiJoin(this.condition.copy(), this.input1.copy(), this.input2.copy());
     };
 
     this.toHTML = function(options) {

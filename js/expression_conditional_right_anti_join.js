@@ -38,18 +38,20 @@ function ConditionalRightAntiJoin(condition,input1, input2) {
         if (!input1.columns || !input2.columns) {
           return [];
         }
-        var r = new LeftAntiJoin(input2,input1);
-        return r.getResult();
+        if (this.condition.isEmpty()) return (new ConditionalJoin(this.condition, this.input1, this.input2)).getResult();
+        var r = new ConditionalRightSemiJoin(condition,input1,input2);
+        var m = new Minus(input2,r);
+        return m.getResult();
     };
 
     this.copy = function() {
-        return new ConditionalRightAntiJoin(this.input1.copy(), this.input2.copy());
+        return new ConditionalRightAntiJoin(this.condition.copy(), this.input1.copy(), this.input2.copy());
     };
 
     this.toHTML = function(options) {
-        var display = '';
-        display += '(' + this.input1.toHTML(options) + " " + latex("\\lhd") + " " + this.input2.toHTML(options) + ")";
-        return display;
+      var display = '';
+      display += '(' + this.input1.toHTML(options) + " " + latex("\\lhd") + "<span style='font-size:10pt; vertical-align: bottom'>" + this.condition.toHTML(options) + "</span> " + " " + this.input2.toHTML(options) + ")";
+      return display;
     };
 
     this.toLatex = function(options) {

@@ -41,7 +41,7 @@ function ConditionalLeftAntiJoin(condition, input1, input2) {
     };
 
     this.copy = function() {
-        return new ConditionalLeftAntiJoin(this.input1.copy(), this.input2.copy());
+        return new ConditionalLeftAntiJoin(this.condition.copy(), this.input1.copy(), this.input2.copy());
     };
 
     this.toHTML = function(options) {

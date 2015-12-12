@@ -40,4 +40,4 @@ function RightOuterJoin(input1, input2) {
         return "(" + this.getInput1().toLatex(options) + symbol + this.getInput2().toLatex(options) + ")";
     };
 }
-RightOuterJoin.prototype = new Join;
+RightOuterJoin.prototype = new Join();

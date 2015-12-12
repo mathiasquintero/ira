@@ -1,4 +1,4 @@
-/* 
+/*
 IRA - Interactive Relational Algebra Tool
 Copyright (C) 2010-2012 Henrik Mühe
 
@@ -18,23 +18,33 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 function Condition() {
     this.kind = Condition;
     this.setChildren([]);
-    
+
     this.copy = function() {
         return new Condition();
-    }
+    };
 
     this.toJS = function() {
         return true;
-    }
+    };
 
     this.toHTML = function() {
         var display = '<a id="block_' + this.blockId + '" class="block" href="javascript:;" ' +
         'onclick="editExpression(getBlock(' + this.blockId + '));">Bedingung</a> ';
         return display;
-    }
+    };
 
     this.toLatex = function() {
         return "true";
-    }
+    };
+
+    /**
+     * Huge hack!
+     * I will change it as soon as I get a better idea.
+     * @return {boolean} Does the condition have a value.
+     */
+    this.isEmpty = function() {
+      return this.children.length === 0 || this.toLatex().indexOf("?") >= 0;
+    };
+
 }
-Condition.prototype = new Block;
+Condition.prototype = new Block();

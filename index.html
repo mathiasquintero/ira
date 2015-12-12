@@ -61,6 +61,14 @@
 </script>
     <script src="js/expression_conditional_join.js" type="text/javascript" charset="utf-8">
 </script>
+  <script src="js/expression_conditional_left_semi_join.js" type="text/javascript" charset="utf-8">
+</script>
+  <script src="js/expression_conditional_right_semi_join.js" type="text/javascript" charset="utf-8">
+</script>
+  <script src="js/expression_conditional_left_anti_join.js" type="text/javascript" charset="utf-8">
+</script>
+  <script src="js/expression_conditional_right_anti_join.js" type="text/javascript" charset="utf-8">
+</script>
     <script src="js/expression_rename.js" type="text/javascript" charset="utf-8">
 </script>
     <script src="js/condition.js" type="text/javascript" charset="utf-8">
@@ -181,9 +189,6 @@
           <li>
             <a href="javascript:;" onclick="addJoin()">$\large{\bowtie}$ - Natürlicher Join einsetzen</a>
           </li>
-          <li>
-            <a href="javascript:;" onclick="addConditionalJoin()">$\large{\bowtie_\Theta}$ - Allgemeiner Join einsetzen</a>
-          </li>
           <!--<li>
             <a href="javascript:;" onclick="addOuterJoin()"><img src="null" border="0" alt="mathtex:{\mathrel{\stackrel{\rule[0.52ex]{0.50ex}{0.10ex}}{\rule[0ex]{0.50ex}{0.10ex}}\hspace{-0.75ex}\mathord{\bowtie}\hspace{-0.1ex}{\mathrel{\stackrel{\rule[0.52ex]{0.50ex}{0.10ex}}{\rule[0ex]{0.50ex}{0.10ex}}\hspace{-0.7ex}}" /> - Outer Join einsetzen</a>
           </li>-->
@@ -204,6 +209,23 @@
           </li>
           <li>
             <a href="javascript:;" onclick="addRightAntiJoin()">$\large{\lhd}$ - Right Anti Join einsetzen</a>
+          </li>
+        </ul>
+        <ul style="float:left;">
+          <li style="margin-top:15px;">
+            <a href="javascript:;" onclick="addConditionalJoin()">$\large{\bowtie_\Theta}$ - Allgemeiner Join einsetzen</a>
+          </li>
+          <li style="margin-top:35px;">
+            <a href="javascript:;" onclick="addConditionalLeftSemiJoin()">$\large{\ltimes_\Theta}$ - Allgemeiner Left Semi Join einsetzen</a>
+          </li>
+          <li>
+            <a href="javascript:;" onclick="addConditionalRightSemiJoin()">$\large{\rtimes_\Theta}$ - Allgemeiner Right Semi Join einsetzen</a>
+          </li>
+          <li>
+            <a href="javascript:;" onclick="addConditionalLeftAntiJoin()">$\large{\rhd_\Theta}$ - Allgemeiner Left Anti Join einsetzen</a>
+          </li>
+          <li>
+            <a href="javascript:;" onclick="addConditionalRightAntiJoin()">$\large{\lhd_\Theta}$ - Allgemeiner Right Anti Join einsetzen</a>
           </li>
         </ul>
         <ul style="float:left;">

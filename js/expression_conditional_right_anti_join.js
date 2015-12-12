@@ -15,11 +15,12 @@ GNU Affero General Public License for more details.
 You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-function RightAntiJoin(input1, input2) {
+function ConditionalRightAntiJoin(condition,input1, input2) {
     this.input1 = input1;
     this.input2 = input2;
+    this.condition = condition;
 
-    this.setChildren([this.input1, this.input2]);
+    this.setChildren([this.condition, this.input1, this.input2]);
 
     this.getName = function() {
         return this.input1.getName() + "_" + this.input2.getName();
@@ -27,11 +28,13 @@ function RightAntiJoin(input1, input2) {
     this.setName = null;
 
     this.getColumns = function() {
+        if (this.condition.isEmpty()) return (new ConditionalJoin(this.condition, this.input1, this.input2)).getColumns();
         return this.input2.getColumns();
     };
     this.setColumns = null;
 
     this.getResult = function() {
+        if (this.condition.isEmpty()) return (new ConditionalJoin(this.condition, this.input1, this.input2)).getResult();
         if (!input1.columns || !input2.columns) {
           return [];
         }
@@ -40,12 +43,12 @@ function RightAntiJoin(input1, input2) {
     };
 
     this.copy = function() {
-        return new RightAntiJoin(this.input1.copy(), this.input2.copy());
+        return new ConditionalRightAntiJoin(this.input1.copy(), this.input2.copy());
     };
 
     this.toHTML = function(options) {
         var display = '';
-        display += '(' + this.input1.toHTML(options) + " " + latex("\\lhd") + "<span style='font-size:10pt; vertical-align: bottom'>" + this.condition.toHTML(options) + "</span> " + " " + this.input2.toHTML(options) + ")";
+        display += '(' + this.input1.toHTML(options) + " " + latex("\\lhd") + " " + this.input2.toHTML(options) + ")";
         return display;
     };
 
@@ -53,4 +56,4 @@ function RightAntiJoin(input1, input2) {
         return "(" + this.input1.toLatex(options) + "\\lhd_{" + this.condition.toLatex(options) + "} " + this.input2.toLatex(options) + ")";
     };
 }
-RightAntiJoin.prototype = new Relation();
+ConditionalRightAntiJoin.prototype = new Relation();

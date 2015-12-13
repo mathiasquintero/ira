@@ -634,8 +634,10 @@ function getBlock(id) {
 }
 
 function resetCurrentBlock() {
-    if ($$(".block")[0]) {
-        currentBlock = getBlock(parseInt($$(".block")[0].id.substring(6)));
+    var blockArray = $$(".block");
+    if (blockArray[0]) {
+        var index = leftSide() ? blockArray.length-1 : 0;
+        currentBlock = getBlock(parseInt(blockArray[index].id.substring(6)));
     } else {
         currentBlock = null;
     }

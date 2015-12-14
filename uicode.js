@@ -343,6 +343,32 @@ function addUnion() {
     updateDisplay(true);
 }
 
+function addConditionalLeftOuterJoin() {
+    saveHistory();
+    var rel = wrapAroundCheck();
+    if (rel === null) return;
+    // not a Relation if this happens
+    Object.extend(currentBlock,
+    addBlock(new ConditionalLeftOuterJoin(
+    addBlock(new Condition(), true),
+    leftSide() ? addBlock(rel, true) : addBlock(new Relation()),
+    leftSide() ? addBlock(new Relation()) : addBlock(rel, true))));
+    updateDisplay(true);
+}
+
+function addConditionalRightOuterJoin() {
+    saveHistory();
+    var rel = wrapAroundCheck();
+    if (rel === null) return;
+    // not a Relation if this happens
+    Object.extend(currentBlock,
+    addBlock(new ConditionalRightOuterJoin(
+    addBlock(new Condition(), true),
+    leftSide() ? addBlock(rel, true) : addBlock(new Relation()),
+    leftSide() ? addBlock(new Relation()) : addBlock(rel, true))));
+    updateDisplay(true);
+}
+
 function addConditionalLeftSemiJoin() {
     saveHistory();
     var rel = wrapAroundCheck();

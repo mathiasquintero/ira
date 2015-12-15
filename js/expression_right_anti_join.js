@@ -45,12 +45,12 @@ function RightAntiJoin(input1, input2) {
 
     this.toHTML = function(options) {
         var display = '';
-        display += '(' + this.input1.toHTML(options) + " " + latex("\\lhd") + "<span style='font-size:10pt; vertical-align: bottom'>" + this.condition.toHTML(options) + "</span> " + " " + this.input2.toHTML(options) + ")";
+        display += '(' + this.input1.toHTML(options) + " " + latex("\\lhd") + " " + this.input2.toHTML(options) + ")";
         return display;
     };
 
     this.toLatex = function(options) {
-        return "(" + this.input1.toLatex(options) + "\\lhd_{" + this.condition.toLatex(options) + "} " + this.input2.toLatex(options) + ")";
+        return "(" + this.input1.toLatex(options) + "\\lhd" + this.input2.toLatex(options) + ")";
     };
 }
 RightAntiJoin.prototype = new Relation();

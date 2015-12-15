@@ -18,6 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 debug = false;
 saves = new Hash();
 expressionHistory = [];
+redoHistory = [];
 inlineUserDefinedRelations = false;
 
 /*
@@ -156,10 +157,20 @@ function saveHistory() {
 
 function back() {
     if (expressionHistory.length === 0) return;
+    redoHistory.push(expression);
     expression = expressionHistory.pop();
     expression.resetBlockIds();
     currentBlock = null;
     updateDisplay(true);
+}
+
+function redo() {
+  if (redoHistory.length === 0) return;
+  saveHistory();
+  expression = redoHistory.pop();
+  expression.resetBlockIds();
+  currentBlock = null;
+  updateDisplay(true);
 }
 
 function addSelection() {
@@ -690,3 +701,10 @@ function toggleInlineUserDefinedRelations(){
 }
 
 getRelationsFromStorage();
+
+function KeyPress(e) {
+      var evtobj = window.event? event : e;
+      if (evtobj.keyCode == 90 && evtobj.ctrlKey && !evtobj.shiftKey) back();
+      if (evtobj.keyCode == 90 && evtobj.ctrlKey && evtobj.shiftKey) redo();
+}
+document.onkeydown = KeyPress;

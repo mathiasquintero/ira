@@ -25,21 +25,22 @@ function ConditionalJoin(condition, input1, input2) {
 
     this.getName = function() {
         return this.input1.getName() + "_" + this.input2.getName();
-    }
+    };
     this.setName = null;
 
-    this.getColumns = function() {
-        var columns = this.input1.getColumns().clone();
-        var name2 = this.input2.getName();
-        this.input2.getColumns().each(function(c) {
-            if (columns.indexOf(c) < 0) {
-                columns.push(c)
-            } else {
-                columns.push(name2 + "." + c)
-            }
+    this.getColumns = function(renameFirst) {
+        var keepsNames = renameFirst ? this.input2.getColumns().clone() : this.input1.getColumns().clone();
+        var namesCanChange = renameFirst ? this.input1.getColumns().clone() : this.input2.getColumns().clone();
+        var nameOfRenamedRelation = renameFirst ? this.input1.getName() : this.input2.getName();
+        namesCanChange = namesCanChange.map(function(c) {
+          if (keepsNames.indexOf(c) < 0) {
+            return c;
+          } else {
+            return nameOfRenamedRelation + "." + c;
+          }
         });
-        return columns;
-    }
+        return renameFirst ? namesCanChange.concat(keepsNames) : keepsNames.concat(namesCanChange);
+    };
     this.setColumns = null;
 
     this.getResult = function() {

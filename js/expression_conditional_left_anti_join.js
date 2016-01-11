@@ -15,11 +15,12 @@ GNU Affero General Public License for more details.
 You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-function RightAntiJoin(input1, input2) {
+function ConditionalLeftAntiJoin(condition, input1, input2) {
     this.input1 = input1;
     this.input2 = input2;
+    this.condition = condition;
 
-    this.setChildren([this.input1, this.input2]);
+    this.setChildren([this.condition, this.input1, this.input2]);
 
     this.getName = function() {
         return this.input1.getName() + "_" + this.input2.getName();
@@ -27,30 +28,30 @@ function RightAntiJoin(input1, input2) {
     this.setName = null;
 
     this.getColumns = function() {
-        return this.input2.getColumns();
+        if (this.condition.isEmpty()) return (new ConditionalJoin(this.condition, this.input1, this.input2)).getColumns();
+        return this.input1.getColumns();
     };
     this.setColumns = null;
 
     this.getResult = function() {
-        if (!input1.columns || !input2.columns) {
-          return [];
-        }
-        var r = new LeftAntiJoin(input2,input1);
-        return r.getResult();
+        if (this.condition.isEmpty()) return (new ConditionalJoin(this.condition, this.input1, this.input2)).getResult();
+        var r = new ConditionalLeftSemiJoin(condition,input1,input2);
+        var m = new Minus(input1,r);
+        return m.getResult();
     };
 
     this.copy = function() {
-        return new RightAntiJoin(this.input1.copy(), this.input2.copy());
+        return new ConditionalLeftAntiJoin(this.condition.copy(), this.input1.copy(), this.input2.copy());
     };
 
     this.toHTML = function(options) {
-        var display = '';
-        display += '(' + this.input1.toHTML(options) + " " + latex("\\lhd") + " " + this.input2.toHTML(options) + ")";
-        return display;
+      var display = '';
+      display += '(' + this.input1.toHTML(options) + " " + latex("\\rhd") + "<span style='font-size:10pt; vertical-align: bottom'>" + this.condition.toHTML(options) + "</span> " + " " + this.input2.toHTML(options) + ")";
+      return display;
     };
 
     this.toLatex = function(options) {
-        return "(" + this.input1.toLatex(options) + "\\lhd" + this.input2.toLatex(options) + ")";
+        return "(" + this.input1.toLatex(options) + "\\rhd_{" + this.condition.toLatex(options) + "} " + this.input2.toLatex(options) + ")";
     };
 }
-RightAntiJoin.prototype = new Relation();
+ConditionalLeftAntiJoin.prototype = new Relation();

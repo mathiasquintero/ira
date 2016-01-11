@@ -18,6 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 debug = false;
 saves = new Hash();
 expressionHistory = [];
+redoHistory = [];
 inlineUserDefinedRelations = false;
 
 /*
@@ -156,10 +157,20 @@ function saveHistory() {
 
 function back() {
     if (expressionHistory.length === 0) return;
+    redoHistory.push(expression);
     expression = expressionHistory.pop();
     expression.resetBlockIds();
     currentBlock = null;
     updateDisplay(true);
+}
+
+function redo() {
+  if (redoHistory.length === 0) return;
+  saveHistory();
+  expression = redoHistory.pop();
+  expression.resetBlockIds();
+  currentBlock = null;
+  updateDisplay(true);
 }
 
 function addSelection() {
@@ -338,6 +349,84 @@ function addUnion() {
     // not a Relation if this happens
     Object.extend(currentBlock,
     addBlock(new Union(
+    leftSide() ? addBlock(rel, true) : addBlock(new Relation()),
+    leftSide() ? addBlock(new Relation()) : addBlock(rel, true))));
+    updateDisplay(true);
+}
+
+function addConditionalLeftOuterJoin() {
+    saveHistory();
+    var rel = wrapAroundCheck();
+    if (rel === null) return;
+    // not a Relation if this happens
+    Object.extend(currentBlock,
+    addBlock(new ConditionalLeftOuterJoin(
+    addBlock(new Condition(), true),
+    leftSide() ? addBlock(rel, true) : addBlock(new Relation()),
+    leftSide() ? addBlock(new Relation()) : addBlock(rel, true))));
+    updateDisplay(true);
+}
+
+function addConditionalRightOuterJoin() {
+    saveHistory();
+    var rel = wrapAroundCheck();
+    if (rel === null) return;
+    // not a Relation if this happens
+    Object.extend(currentBlock,
+    addBlock(new ConditionalRightOuterJoin(
+    addBlock(new Condition(), true),
+    leftSide() ? addBlock(rel, true) : addBlock(new Relation()),
+    leftSide() ? addBlock(new Relation()) : addBlock(rel, true))));
+    updateDisplay(true);
+}
+
+function addConditionalLeftSemiJoin() {
+    saveHistory();
+    var rel = wrapAroundCheck();
+    if (rel === null) return;
+    // not a Relation if this happens
+    Object.extend(currentBlock,
+    addBlock(new ConditionalLeftSemiJoin(
+    addBlock(new Condition(), true),
+    leftSide() ? addBlock(rel, true) : addBlock(new Relation()),
+    leftSide() ? addBlock(new Relation()) : addBlock(rel, true))));
+    updateDisplay(true);
+}
+
+function addConditionalRightSemiJoin() {
+    saveHistory();
+    var rel = wrapAroundCheck();
+    if (rel === null) return;
+    // not a Relation if this happens
+    Object.extend(currentBlock,
+    addBlock(new ConditionalRightSemiJoin(
+    addBlock(new Condition(), true),
+    leftSide() ? addBlock(rel, true) : addBlock(new Relation()),
+    leftSide() ? addBlock(new Relation()) : addBlock(rel, true))));
+    updateDisplay(true);
+}
+
+function addConditionalLeftAntiJoin() {
+    saveHistory();
+    var rel = wrapAroundCheck();
+    if (rel === null) return;
+    // not a Relation if this happens
+    Object.extend(currentBlock,
+    addBlock(new ConditionalLeftAntiJoin(
+    addBlock(new Condition(), true),
+    leftSide() ? addBlock(rel, true) : addBlock(new Relation()),
+    leftSide() ? addBlock(new Relation()) : addBlock(rel, true))));
+    updateDisplay(true);
+}
+
+function addConditionalRightAntiJoin() {
+    saveHistory();
+    var rel = wrapAroundCheck();
+    if (rel === null) return;
+    // not a Relation if this happens
+    Object.extend(currentBlock,
+    addBlock(new ConditionalRightAntiJoin(
+    addBlock(new Condition(), true),
     leftSide() ? addBlock(rel, true) : addBlock(new Relation()),
     leftSide() ? addBlock(new Relation()) : addBlock(rel, true))));
     updateDisplay(true);
@@ -582,8 +671,10 @@ function getBlock(id) {
 }
 
 function resetCurrentBlock() {
-    if ($$(".block")[0]) {
-        currentBlock = getBlock(parseInt($$(".block")[0].id.substring(6)));
+    var blockArray = $$(".block");
+    if (blockArray[0]) {
+        var index = leftSide() ? blockArray.length-1 : 0;
+        currentBlock = getBlock(parseInt(blockArray[index].id.substring(6)));
     } else {
         currentBlock = null;
     }
@@ -610,3 +701,10 @@ function toggleInlineUserDefinedRelations(){
 }
 
 getRelationsFromStorage();
+
+function KeyPress(e) {
+      var evtobj = window.event? event : e;
+      if (evtobj.keyCode == 90 && evtobj.ctrlKey && !evtobj.shiftKey) back();
+      if (evtobj.keyCode == 90 && evtobj.ctrlKey && evtobj.shiftKey) redo();
+}
+document.onkeydown = KeyPress;

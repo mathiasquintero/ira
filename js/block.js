@@ -1,4 +1,4 @@
-/* 
+/*
 IRA - Interactive Relational Algebra Tool
 Copyright (C) 2010-2012 Henrik Mühe
 
@@ -21,16 +21,16 @@ function Block() {
     this.children = [];
     this.getChildren = function() {
         return this.children;
-    }
+    };
 
     this.setChildren = function(c) {
         this.children = c;
-    }
+    };
 
     this.copy = function() {
         throw "Kann abstrakte Klasse Block nicht kopieren.";
-    }
-    
+    };
+
     this.resetBlockIds = function() {
         if (!this.blockId) {
             this.blockId = ++blockid;
@@ -38,7 +38,7 @@ function Block() {
                 c.resetBlockIds();
             });
         }
-    }
+    };
 
     this.findChild = function(id) {
         if (this.blockId == id) {
@@ -47,11 +47,11 @@ function Block() {
             var result = null;
             this.getChildren().each(function(c) {
                 var f = c.findChild(id);
-                if (f != null) {
+                if (f !== null) {
                     result = f;
                 }
             });
             return result;
         }
-    }
+    };
 }

@@ -29,7 +29,7 @@ function Rename(renames, input) {
             // return old name
             return this.input.getName();
         }
-    }
+    };
     this.setName = null;
 
     this.getColumns = function() {

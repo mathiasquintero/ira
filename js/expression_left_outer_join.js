@@ -27,17 +27,17 @@ function LeftOuterJoin(input1, input2) {
     this.rightOuter = false;
 
     this.copy = function() {
-        return new LeftOuterJoin(this.getInput1().copy(), this.getInput1().copy());
-    }
+        return new LeftOuterJoin(this.getInput1().copy(), this.getInput2().copy());
+    };
 
     this.toHTML = function(options) {
         var display = '';
         display += '(' + this.getInput1().toHTML(options) + " " + latex(symbol) + " " + this.getInput2().toHTML(options) + ")";
         return display;
-    }
+    };
 
     this.toLatex = function(options) {
         return "(" + this.getInput1().toLatex(options) + symbol + this.getInput2().toLatex(options) + ")";
-    }
+    };
 }
 LeftOuterJoin.prototype = new Join;

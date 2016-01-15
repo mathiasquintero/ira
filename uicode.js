@@ -153,6 +153,7 @@ function handleColumn(column) {
 function saveHistory() {
     // save
     expressionHistory.push(expression.copy());
+    redoHistory = [];
 }
 
 function back() {
@@ -166,7 +167,9 @@ function back() {
 
 function redo() {
   if (redoHistory.length === 0) return;
+  var tmp = redoHistory;
   saveHistory();
+  redoHistory = tmp;
   expression = redoHistory.pop();
   expression.resetBlockIds();
   currentBlock = null;

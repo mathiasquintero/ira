@@ -26,35 +26,35 @@ function Join(input1, input2) {
 
     this.getInput1 = function() {
         return this.input1;
-    }
+    };
 
     this.getInput2 = function() {
         return this.input2;
-    }
+    };
 
     this.getName = function() {
         return this.input1.getName() + "_" + this.input2.getName();
-    }
+    };
     this.setName = null;
 
     this.moo = function() {
         alert('moo');
-    }
+    };
 
     this.getColumns = function() {
         var columns = this.input1.getColumns().clone();
         this.input2.getColumns().each(function(c) {
             if (columns.indexOf(c) < 0) {
-                columns.push(c)
+                columns.push(c);
             }
         });
         return columns;
-    }
+    };
     this.setColumns = null;
 
     this.getResult = function() {
-        var rel1 = this.input1.getResult()
-        var rel2 = this.input2.getResult()
+        var rel1 = this.input1.getResult();
+        var rel2 = this.input2.getResult();
         var col1 = this.input1.getColumns();
         var col2 = this.input2.getColumns();
         var result = [];
@@ -86,12 +86,12 @@ function Join(input1, input2) {
                     var newrow = row1.clone();
                     col2.each(function(c, nr) {
                         if (joincolumns.indexOf(c) < 0) {
-                            newrow.push(row2[nr])
+                            newrow.push(row2[nr]);
                         }
                     });
                     result.push(newrow);
 
-                    rights_added.set(nr, true)
+                    rights_added.set(nr, true);
                     left_added = true;
                 }
             });
@@ -138,20 +138,20 @@ function Join(input1, input2) {
         }
 
         return result;
-    }
+    };
 
     this.copy = function() {
         return new Join(this.input1.copy(), this.input2.copy());
-    }
+    };
 
     this.toHTML = function(options) {
         var display = '';
         display += '(' + this.input1.toHTML(options) + " " + latex("\\bowtie") + " " + this.input2.toHTML(options) + ")";
         return display;
-    }
+    };
 
     this.toLatex = function(options) {
         return "(" + this.input1.toLatex(options) + "\\bowtie " + this.input2.toLatex(options) + ")";
-    }
+    };
 }
 Join.prototype = new Relation();

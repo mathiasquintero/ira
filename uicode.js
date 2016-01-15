@@ -22,11 +22,8 @@ redoHistory = [];
 inlineUserDefinedRelations = false;
 
 /*
-  These two functions getSaves and saveSaves do all the casting play requiered
-  for us to parse what we stored in localStorage.
-  It's pretty much a hack on top of a hack.
+  Load user-defined-relations from localStorage.
 */
-
 function getRelationsFromStorage() {
   try {
     var objectFromStorage = window.localStorage.getItem("tables");
@@ -66,6 +63,9 @@ function getRelationsFromStorage() {
   }
 }
 
+/*
+  Save all user-defined-relations to localStorage.
+*/
 function saveRelationsToStorage() {
   var savesAsArray = [];
   saves.each(function(kvp) {
@@ -153,6 +153,7 @@ function handleColumn(column) {
 function saveHistory() {
     // save
     expressionHistory.push(expression.copy());
+    redoHistory = [];
 }
 
 function back() {
@@ -166,7 +167,9 @@ function back() {
 
 function redo() {
   if (redoHistory.length === 0) return;
+  var tmp = redoHistory;
   saveHistory();
+  redoHistory = tmp;
   expression = redoHistory.pop();
   expression.resetBlockIds();
   currentBlock = null;

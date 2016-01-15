@@ -449,9 +449,9 @@ function addConditionalJoin() {
 }
 
 function isValidRename(rename) {
-  if (rename === "")
+  if (rename.split(" ").reduce(function(r,x) { return r && x === ""}, true))
     return false;
-  if (rename.indexOf("<-") < 0)
+  if (rename.indexOf("<-") < 0 && rename.indexOf(".") < 0)
     return true;
   var names = rename.split(",").map(function(x) {
     return x.split("<-")[0];
@@ -462,16 +462,28 @@ function isValidRename(rename) {
 }
 
 function promtForRename(help) {
-  var res = "";
-  while(!isValidRename(res)) {
-    res = prompt(help);
-    help = "Es gab ein fehler. Bitte achten sie auf die Punkte\n" + help;
-  }
+  var res;
+  var message = help;
+  do {
+
+    /**
+     * " " is a workaround for safari
+     * not returning null when cancel is clicked.
+     *
+     * Do not take space out unless you
+     * can figure out how to fix it
+     */
+
+    res = prompt(message," ");
+    console.log(res);
+    console.log(typeof res);
+    message = "Es gab ein fehler. Bitte achten sie auf die Punkte\n" + help;
+  } while(res && res !== "" && !isValidRename(res));
   return res;
 }
 
 function addRename(renames) {
-    if (!renames) return;
+    if (!renames || renames === "") return;
     saveHistory();
     var rel = wrapAroundCheck();
     if (rel === null) return;

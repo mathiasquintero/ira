@@ -449,7 +449,7 @@ function addConditionalJoin() {
 }
 
 function isValidRename(rename) {
-  if (rename.split(" ").reduce(function(r,x) { return r && x === ""}, true))
+  if (rename.split(" ")[0] === "")
     return false;
   if (rename.indexOf("<-") < 0 && rename.indexOf(".") < 0)
     return true;
@@ -475,8 +475,6 @@ function promtForRename(help) {
      */
 
     res = prompt(message," ");
-    console.log(res);
-    console.log(typeof res);
     message = "Es gab ein fehler. Bitte achten sie auf die Punkte\n" + help;
   } while(res && res !== "" && !isValidRename(res));
   return res;

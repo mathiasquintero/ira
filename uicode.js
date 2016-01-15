@@ -448,6 +448,28 @@ function addConditionalJoin() {
     updateDisplay(true);
 }
 
+function isValidRename(rename) {
+  if (rename === "")
+    return false;
+  if (rename.indexOf("<-") < 0)
+    return true;
+  var names = rename.split(",").map(function(x) {
+    return x.split("<-")[0];
+  });
+  return names.reduce(function(r,x) {
+    return r && x.indexOf(".") < 0;
+  }, true);
+}
+
+function promtForRename(help) {
+  var res = "";
+  while(!isValidRename(res)) {
+    res = prompt(help);
+    help = "Es gab ein fehler. Bitte achten sie auf die Punkte\n" + help;
+  }
+  return res;
+}
+
 function addRename(renames) {
     if (!renames) return;
     saveHistory();

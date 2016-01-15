@@ -11,12 +11,17 @@ function Division(input1, input2) {
     this.setName = null;
 
     this.validate = function() {
-      var leftInputColumns = this.input1.getColumns();
-      var rightInputColumns = this.input2.getColumns();
+      var leftInputColumns = this.input1.getColumns().clone().map(function(x) {
+        var data = x.split(".");
+        return data[data.length-1];
+      });
+      var rightInputColumns = this.input2.getColumns().map(function(x) {
+        var data = x.split(".");
+        return data[data.length-1];
+      });
       if (leftInputColumns === null || rightInputColumns === null) {
           throw "Es fehlt mindestens eine Eingaberelation.";
       }
-
       var commonColumnCount = 0;
       for (var i = 0; i<rightInputColumns.length;i++) {
         if (leftInputColumns.indexOf(rightInputColumns[i]) === -1) {
@@ -36,12 +41,11 @@ function Division(input1, input2) {
         var columns = this.input1.getColumns().clone();
         var dividerColumns = this.input2.getColumns().clone();
         var isInColumns = function(name, columnArray) {
-          for (var i = 0; i<columnArray.length;i++) {
-            if (columnArray[i] === name) {
-              return true;
-            }
-          }
-          return false;
+          var data1 = name.split(".");
+          return columnArray.reduce(function(r,x) {
+            var data2 = x.split(".");
+            return r || data1[data1.length-1] === data2[data2.length-1];
+          },false);
         };
         for (var i = 0; i<columns.length;i++) {
           if (!isInColumns(columns[i], dividerColumns)) {
@@ -60,11 +64,15 @@ function Division(input1, input2) {
         var namingCommand = "";
         var cpColumns = cp.getColumns();
         for (var i=0;i<cpColumns.length;i++) {
-          namingCommand += cpColumns[i].split(".")[1] + "<-" + cpColumns[i] + ",";
+          var data = cpColumns[i].split(".");
+          namingCommand += data[data.length-1] + "<-" + cpColumns[i] + ",";
         }
         var newNames = new Rename(namingCommand,cp);
         var min = new Minus(newNames, this.input1);
-        var proj = new Projection(cols.toString(), min);
+        var proj = new Projection(cols.map(function(x) {
+          var data = x.split(".");
+          return data[data.length-1];
+        }).toString(), min);
         min = new Minus(pro, proj);
         return min.getResult();
     };

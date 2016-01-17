@@ -461,7 +461,7 @@ function isValidRename(rename) {
   }, true);
 }
 
-function promtForRename(help) {
+function promptForRename(help) {
   var res;
   var message = help;
   do {
@@ -475,7 +475,7 @@ function promtForRename(help) {
      */
 
     res = prompt(message," ");
-    message = "Es gab ein fehler. Bitte achten sie auf die Punkte\n" + help;
+    message = "Es gab ein fehler. Bitte achten Sie auf die Punkte\n" + help;
   } while(res && res !== "" && !isValidRename(res));
   return res;
 }

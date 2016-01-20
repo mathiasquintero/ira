@@ -23,20 +23,20 @@ function Intersection(input1, input2) {
 
     // as per Kemper et. al page 93
     this.base = Minus;
-    this.base(this.input1, new Minus(this.input1, this.input2))
+    this.base(this.input1, new Minus(this.input1, this.input2));
 
     this.copy = function() {
         return new Intersection(this.input1.copy(), this.input2.copy());
-    }
+    };
 
     this.toHTML = function(options) {
         var display = '';
         display += '(' + this.input1.toHTML(options) + " " + latex("\\cap") + " " + this.input2.toHTML(options) + ")";
         return display;
-    }
+    };
 
     this.toLatex = function(options) {
         return "(" + this.input1.toLatex(options) + "\\cap " + this.input2.toLatex(options) + ")";
-    }
+    };
 }
-Intersection.prototype = new Minus;
+Intersection.prototype = new Minus();

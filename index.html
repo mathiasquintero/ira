@@ -169,9 +169,11 @@
                 var renameHelp = "Um die gesamte Relation umzubenennen, hier den neuen Namen eintragen.\n\n";
                 renameHelp += "Um einzelne Spalten umzubenennen folgende Notation: NeueSpalte1<-AlteSpalte1,NeueSpalte2<-AlteSpalte\n";
                 renameHelp += "Beispiel: ProfName<-Name,Hierarchieebene<-Rang\n";
-                renameHelp += "ACHTUNG: Groß- und Kleinschreibung ist wichtig!!";
+                renameHelp += "ACHTUNG: Groß- und Kleinschreibung ist wichtig!!\n";
+                renameHelp += "Umbenennungen mit Punkte sind nicht erlaubt.";
+
             //]]>
-            </script> <a href="javascript:;" onclick="addRename(prompt(renameHelp))">$\large{\rho}$ - Umbenennung einsetzen</a>
+            </script> <a href="javascript:;" onclick="addRename(promptForRename(renameHelp))">$\large{\rho}$ - Umbenennung einsetzen</a>
           </li>
           <li style="margin-top:15px;">
             <a href="javascript:;" onclick="addMinus()">$\large{\setminus}$ - Minus einsetzen</a>

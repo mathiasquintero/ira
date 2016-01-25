@@ -56,31 +56,33 @@ function Rename(renames, input) {
             });
             return newcols;
         } else {
-            return this.input.getColumns();
+            return this.input.getColumns().map(function (x) {
+              return renames + "." + x;
+            });
         }
-    }
+    };
     this.setColumns = null;
 
     this.getResult = function() {
         return input.getResult();
 
-    }
+    };
 
     this.copy = function() {
         return new Rename(renames, this.input.copy());
-    }
+    };
 
     this.toHTML = function(options) {
         var display = '(';
         display += latex("\\rho");
         display += '<span style=\'font-size:10pt; vertical-align: bottom\'>' + renames + "</span> " + this.input.toHTML(options) + ")";
         return display;
-    }
+    };
 
 
     this.toLatex = function(options) {
-        var lcol = renames.gsub("<-", '\\leftarrow ')
+        var lcol = renames.gsub("<-", '\\leftarrow ');
         return "\\rho_{" + lcol + "}" + input.toLatex(options);
-    }
+    };
 }
 Rename.prototype = new Relation();

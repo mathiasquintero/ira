@@ -43,12 +43,16 @@ function Join(input1, input2) {
 
     this.getColumns = function() {
         var columns = this.input1.getColumns().clone();
-        this.input2.getColumns().each(function(c) {
-            if (columns.indexOf(c) < 0) {
-                columns.push(c);
-            }
-        });
-        return columns;
+        var isInJoin = function(c) {
+          var data2 = c.split(".");
+          return columns.reduce(function(r,n) {
+            var data1 = n.split(".");
+            return r || data1[data1.length-1] == data2[data2.length-1];
+          }, false);
+        };
+        return columns.concat(this.input2.getColumns().filter(function(c) {
+          return !isInJoin(c);
+        }));
     };
     this.setColumns = null;
 
@@ -62,12 +66,20 @@ function Join(input1, input2) {
         // find natural join columns
         var joincolumns = [];
         col1.each(function(c1) {
+            var data1 = c1.split(".");
             col2.each(function(c2) {
-                if (c1 == c2) {
-                    joincolumns.push(c1);
+                var data2 = c2.split(".");
+                if (data1[data1.length-1] == data2[data2.length-1]) {
+                    joincolumns.push([c1,c2]);
                 }
             });
         });
+
+        var isInJoin = function(c) {
+          return joincolumns.reduce(function(r,n) {
+            return r || n[0] == c || n[1] == c;
+          }, false);
+        };
 
         // build result
         var rights_added = new Hash();
@@ -77,7 +89,7 @@ function Join(input1, input2) {
             rel2.each(function(row2, nr) {
                 var good = true;
                 joincolumns.each(function(c) {
-                    if (row1[col1.indexOf(c)] != row2[col2.indexOf(c)]) {
+                    if (row1[col1.indexOf(c[0])] != row2[col2.indexOf(c[1])]) {
                         good = false;
                     }
                 });
@@ -85,7 +97,7 @@ function Join(input1, input2) {
                 if (good) {
                     var newrow = row1.clone();
                     col2.each(function(c, nr) {
-                        if (joincolumns.indexOf(c) < 0) {
+                        if (!isInJoin(c)) {
                             newrow.push(row2[nr]);
                         }
                     });

@@ -17,7 +17,7 @@ describe('relation', function() {
     });
   };
 
-  for (var i = 0; i < 100; i++) {
+  for (var i = 0; i < 0; i++) {
     var noOfCol = Math.random() * 100 + 1;
     var noOfRows = Math.random() * 100 + 1;
     var columns = createColumns(10);
@@ -25,5 +25,5 @@ describe('relation', function() {
     var relation = new DataRelation("Data",columns,itemsInRelation);
     assertions(relation,columns,itemsInRelation);
   }
-  
+
 });

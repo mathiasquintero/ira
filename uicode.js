@@ -155,6 +155,7 @@ function handleColumn(column) {
 function saveHistory() {
     // save
     expressionHistory.push(expression.copy());
+    redoHistory = [];
 }
 
 function back() {
@@ -168,7 +169,9 @@ function back() {
 
 function redo() {
   if (redoHistory.length === 0) return;
+  var tmp = redoHistory;
   saveHistory();
+  redoHistory = tmp;
   expression = redoHistory.pop();
   expression.resetBlockIds();
   currentBlock = null;
@@ -447,8 +450,40 @@ function addConditionalJoin() {
     updateDisplay(true);
 }
 
+function isValidRename(rename) {
+  if (rename.split(" ")[0] === "")
+    return false;
+  if (rename.indexOf("<-") < 0 && rename.indexOf(".") < 0)
+    return true;
+  var names = rename.split(",").map(function(x) {
+    return x.split("<-")[0];
+  });
+  return names.reduce(function(r,x) {
+    return r && x.indexOf(".") < 0;
+  }, true);
+}
+
+function promptForRename(help) {
+  var res;
+  var message = help;
+  do {
+
+    /**
+     * " " is a workaround for safari
+     * not returning null when cancel is clicked.
+     *
+     * Do not take space out unless you
+     * can figure out how to fix it
+     */
+
+    res = prompt(message," ");
+    message = "Es gab ein fehler. Bitte achten Sie auf die Punkte\n" + help;
+  } while(res && res !== "" && !isValidRename(res));
+  return res;
+}
+
 function addRename(renames) {
-    if (!renames) return;
+    if (!renames || renames === "") return;
     saveHistory();
     var rel = wrapAroundCheck();
     if (rel === null) return;

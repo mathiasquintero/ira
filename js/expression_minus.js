@@ -22,9 +22,15 @@ function Minus(input1, input2) {
     this.setChildren([this.input1, this.input2]);
 
     this.validate = function() {
-      var leftInputColumns = this.input1.getColumns();
-      var rightInputColumns = this.input2.getColumns();
-        if (leftInputColumns == null || rightInputColumns == null) {
+      var leftInputColumns = this.input1.getColumns().map(function(x) {
+        var data = x.split(".");
+        return data[data.length-1];
+      });
+      var rightInputColumns = this.input2.getColumns().map(function(x) {
+        var data = x.split(".");
+        return data[data.length-1];
+      });
+        if (leftInputColumns === null || rightInputColumns === null) {
             throw "Es fehlt mindestens eine Eingaberelation.";
         }
 
@@ -37,24 +43,24 @@ function Minus(input1, input2) {
                 throw "Die Spaltenzahl und Namen der zwei Eingaberelationen müssen für Minus gleich sein!";
             }
         });
-    }
+    };
 
     this.getName = function() {
         this.validate();
         return this.input1.getName() + "_" + this.input2.getName();
-    }
+    };
     this.setName = null;
 
     this.getColumns = function() {
         this.validate();
         return this.input1.getColumns();
-    }
+    };
     this.setColumns = null;
 
     this.getResult = function() {
         this.validate();
-        var rel1 = this.input1.getResult()
-        var rel2 = this.input2.getResult()
+        var rel1 = this.input1.getResult();
+        var rel2 = this.input2.getResult();
         var col1 = this.input1.getColumns();
         var result = [];
 
@@ -80,20 +86,20 @@ function Minus(input1, input2) {
         });
 
         return result;
-    }
+    };
 
     this.copy = function() {
         return new Minus(this.input1.copy(), this.input2.copy());
-    }
+    };
 
     this.toHTML = function(options) {
         var display = '';
         display += '(' + this.input1.toHTML(options) + " " + latex("\\setminus") + " " + this.input2.toHTML(options) + ")";
         return display;
-    }
+    };
 
     this.toLatex = function(options) {
         return "(" + this.input1.toLatex(options) + "\\setminus " + this.input2.toLatex(options) + ")";
-    }
+    };
 }
 Minus.prototype = new Relation();

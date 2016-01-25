@@ -22,38 +22,41 @@ function Union(input1, input2) {
     this.input2 = input2;
 
     this.validate = function() {
-        if (this.input1.getColumns() == null || this.input2.getColumns() == null) {
+      var leftInputColumns = this.input1.getColumns().clone().map(function(x) {
+        var data = x.split(".");
+        return data[data.length-1];
+      });
+      var rightInputColumns = this.input2.getColumns().map(function(x) {
+        var data = x.split(".");
+        return data[data.length-1];
+      });
+        if (leftInputColumns === null || rightInputColumns === null) {
             throw "Es fehlt mindestens eine Eingaberelation der Vereinigung.";
         }
-
-        if (this.input1.getColumns().length != this.input2.getColumns().length) {
-            throw "Die Spaltenzahl und Namen der zwei Eingaberelationen müssen für die Vereinigung gleich sein!";
-        }
-
-        cols2 = this.input2.getColumns();
-        this.input1.getColumns().each(function(c, nr) {
-            if (c != cols2[nr]) {
+        
+        leftInputColumns.each(function(c, nr) {
+            if (c != rightInputColumns[nr]) {
                 throw "Die Spaltenzahl und Namen der zwei Eingaberelationen müssen für die Vereinigung gleich sein!";
             }
         });
-    }
+    };
 
     this.getName = function() {
         this.validate();
         return this.input1.getName() + "_" + this.input2.getName();
-    }
+    };
     this.setName = null;
 
     this.getColumns = function() {
         this.validate();
         return this.input1.getColumns();
-    }
+    };
     this.setColumns = null;
 
     this.getResult = function() {
         this.validate();
-        var rel1 = this.input1.getResult()
-        var rel2 = this.input2.getResult()
+        var rel1 = this.input1.getResult();
+        var rel2 = this.input2.getResult();
         var col1 = this.input1.getColumns();
         var result = rel1.clone();
 
@@ -78,20 +81,20 @@ function Union(input1, input2) {
         });
 
         return result;
-    }
+    };
 
     this.copy = function() {
         return new Union(this.input1.copy(), this.input2.copy());
-    }
+    };
 
     this.toHTML = function(options) {
         var display = '';
         display += '(' + this.input1.toHTML(options) + " " + latex("\\cup") + " " + this.input2.toHTML(options) + ")";
         return display;
-    }
+    };
 
     this.toLatex = function(options) {
         return "(" + this.input1.toLatex(options) + "\\cup " + this.input2.toLatex(options) + ")";
-    }
+    };
 }
 Union.prototype = new Relation();

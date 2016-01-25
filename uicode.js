@@ -190,6 +190,32 @@ function addSelection() {
     updateDisplay(true);
 }
 
+function addProjUI() {
+  updateResult(true);
+}
+
+function project() {
+  var h = "";
+  var count = 0;
+  expression.getColumns().each(function(c) {
+      var input = $('inlineCheckbox' + c);
+      if (input !== null) {
+        var value = input.checked;
+        if (value) {
+          h += c + ",";
+          count++;
+        }
+      }
+  });
+  if (count > 0 && count !== expression.getColumns().length) {
+    h = h.substring(0,h.length-1);
+    addProjection(h);
+  }
+  if (count === expression.getColumns().length) {
+    updateDisplay(true);
+  }
+}
+
 function addProjection(cols) {
     saveHistory();
     var rel = wrapAroundCheck();
@@ -199,7 +225,7 @@ function addProjection(cols) {
     addBlock(new Projection(
     cols,
     addBlock(rel, true))));
-    updateDisplay(true);
+    updateResult(true);
 }
 
 function addCrossproduct() {
@@ -633,7 +659,7 @@ function updateDisplay(reset) {
 	MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
 }
 
-function updateResult() {
+function updateResult(projecting) {
 
     var result;
     if (debug) {
@@ -649,12 +675,20 @@ function updateResult() {
     }
     var h = '';
 
+    if (projecting) {
+      h += '<button onclick="project()" class="btn" type="button">Projection Fertig!</button><br><br>';
+    }
+
     h += '<table class="table table-bordered table-hover table-striped">';
     h += '<thead><tr>';
 
     // header
     expression.getColumns().each(function(c) {
-        h += '<th><a href="javascript:;" onclick="handleColumn(\'' + c + '\')">' + c + '</a></th>';
+        if (projecting) {
+          h += '<th><input type="checkbox" id="inlineCheckbox' + c + '"><a>  ' + c + '</a></th>';
+        } else {
+          h += '<th><a href="javascript:;" onclick="handleColumn(\'' + c + '\')">' + c + '</a></th>';
+        }
     });
 
     h += '</tr></thead><tbody class="ui-widget-content">';

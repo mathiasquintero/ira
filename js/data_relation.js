@@ -23,33 +23,34 @@ function DataRelation(name, columns, data, expr) {
 
     this.copy = function() {
         return new DataRelation(name, columns, data, expr);
-    }
+    };
 
     this.getName = function() {
         return this.name;
-    }
+    };
     this.setName = null;
 
     this.getColumns = function() {
         return this.columns;
-    }
+    };
     this.setColumns = null;
 
     this.getResult = function() {
         return this.data;
-    }
+    };
 
     this.toHTML = function(options) {
         return latex(this.toLatex(options));
-    }
+    };
 
     this.toLatex = function(options) {
         if (options && options.inline) {
-          return this.expression != undefined ? this.expression.toLatex(options) : this.name;
+          return this.expression !== undefined ? this.expression.toLatex(options) : this.name;
         } else {
           return this.name;
         }
-    }
+    };
 
 }
-DataRelation.prototype = new Relation;
+DataRelation.prototype = new Relation();
+module.exports = DataRelation;

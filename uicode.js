@@ -91,7 +91,9 @@ function reset() {
     updateDisplay();
 }
 
-function save(name) {
+function saveUDR() {
+  var name = document.forms.save.udrname.value;
+  console.log(name);
 	if(name === null)
 		return;
 	name = name.trim();
@@ -560,7 +562,7 @@ function updateDisplay(reset) {
         $$(".toolbox_values").each(function(c) {
             c.style.opacity = 1;
         });
-        jQuery("#tabs").tabs('select', 2);
+        $('tab3b').click();
     } else if (currentBlock && currentBlock.kind == Condition) {
         $$(".toolbox").each(function(c) {
             c.style.opacity = 0.3;
@@ -568,7 +570,7 @@ function updateDisplay(reset) {
         $$(".toolbox_conditions").each(function(c) {
             c.style.opacity = 1;
         });
-        jQuery("#tabs").tabs('select', 1);
+        $('tab2b').click();
     } else {
         // if (currentBlock instanceof Relation) {
         $$(".toolbox").each(function(c) {
@@ -577,7 +579,7 @@ function updateDisplay(reset) {
         $$(".toolbox_expressions").each(function(c) {
             c.style.opacity = 1;
         });
-        jQuery("#tabs").tabs('select', 0);
+        $('tab1b').click();
     }
 
     if (currentBlock === null) {
@@ -612,9 +614,8 @@ function updateResult() {
     }
     var h = '';
 
-    h += '<h4>Relation: ' + expression.getName() + '</h4>';
-    h += '<table class="ui-widget">';
-    h += '<thead class="ui-widget-header"><tr>';
+    h += '<table class="table table-bordered table-hover table-striped">';
+    h += '<thead><tr>';
 
     // header
     expression.getColumns().each(function(c) {
@@ -633,7 +634,12 @@ function updateResult() {
 
     h += '</tbody></table>';
 
-    var display = $("result");
+    var display = $("resultName");
+    display.innerHTML = "";
+    var t = document.createElement('div');
+    display.appendChild(t);
+    t.innerHTML = '<h4>Relation: ' + expression.getName() + '</h4>';
+    display = $("result");
     display.innerHTML = "";
     var a = document.createElement('div');
     display.appendChild(a);
@@ -708,3 +714,5 @@ function KeyPress(e) {
       if (evtobj.keyCode == 90 && evtobj.ctrlKey && evtobj.shiftKey) redo();
 }
 document.onkeydown = KeyPress;
+
+currentBlock = new Block();

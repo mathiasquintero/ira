@@ -676,7 +676,7 @@ function updateResult(projecting) {
     var h = '';
 
     if (projecting) {
-      h += '<button onclick="project()" class="btn" type="button">Projection Fertig!</button><br><br>';
+      h += '<button onclick="project()" class="btn btn-info" type="button">Projection Fertig!</button><br><br>';
     }
 
     h += '<table class="table table-bordered table-hover table-striped">';

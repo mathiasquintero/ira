@@ -118,7 +118,7 @@
                 <a href="javascript:;" onclick="addSelection()">$\large{\sigma}$ - Selektion einsetzen</a>
               </li>
               <li>
-                <a href="#result" onclick="addProjUI()">$\large{\Pi}$ - Projektion einsetzen</a>
+                <a href="#result" onclick="updateResult(true)">$\large{\Pi}$ - Projektion einsetzen</a>
               </li>
               <li>
                 <script type="text/javascript">
@@ -127,7 +127,7 @@
                   renameHelp += "Beispiel: ProfName<-Name,Hierarchieebene<-Rang\n";
                   renameHelp += "ACHTUNG: Groß- und Kleinschreibung ist wichtig!!";
                 </script>
-                <a href="javascript:;" onclick="addRename(prompt(renameHelp))">$\large{\rho}$ - Umbenennung einsetzen</a>
+                <a href="#result" onclick="updateResult(false,true)">$\large{\rho}$ - Umbenennung einsetzen</a>
               </li>
               <li style="margin-top:15px;">
                 <a href="javascript:;" onclick="addMinus()">$\large{\setminus}$ - Minus einsetzen</a>
@@ -301,7 +301,7 @@
           </button>
           <div id="demo" class="collapse">
             <br>
-            <form>
+            <form name="save">
               <input name="udrname" class="input-medium search-query" type="text" placeholder="Name">
               <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#demo" onclick="saveUDR()">
                 Save

@@ -190,11 +190,7 @@ function addSelection() {
     updateDisplay(true);
 }
 
-function addProjUI() {
-  updateResult(true);
-}
-
-function project() {
+function projectFromInput() {
   var h = "";
   var count = 0;
   expression.getColumns().each(function(c) {
@@ -508,6 +504,44 @@ function promptForRename(help) {
   return res;
 }
 
+function renameFromInput() {
+  var h = "";
+  var count = 0;
+  expression.getColumns().each(function(c) {
+      var input = $('newName' + c);
+      if (input !== null) {
+        var value = input.value;
+        if (value) {
+          h += value + "<-" + c + ",";
+          count++;
+        }
+      }
+  });
+  var input = $('newNameForRelation');
+  var value;
+  if (input !== null) {
+    value = input.value;
+  }
+  if (count > 0 && count !== expression.getColumns().length) {
+    h = h.substring(0,h.length-1);
+    if (isValidRename(h)) {
+      addRename(h);
+    } else {
+      $("error").innerHTML = "Problem: Namen mit Punkte sind nicht Erlaubt.<br/>";
+    }
+  } else {
+    updateDisplay();
+  }
+  if (value) {
+    if (isValidRename(value))
+      addRename(value);
+    else
+      $("error").innerHTML = "Problem: Namen mit Punkte sind nicht Erlaubt.<br/>";
+  } else if ($("error").innerHTML === "") {
+    updateDisplay();
+  }
+}
+
 function addRename(renames) {
     if (!renames || renames === "") return;
     saveHistory();
@@ -659,7 +693,7 @@ function updateDisplay(reset) {
 	MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
 }
 
-function updateResult(projecting) {
+function updateResult(projecting, renaming) {
 
     var result;
     if (debug) {
@@ -676,7 +710,9 @@ function updateResult(projecting) {
     var h = '';
 
     if (projecting) {
-      h += '<button onclick="project()" class="btn btn-info" type="button">Projection Fertig!</button><br><br>';
+      h += '<button onclick="projectFromInput()" class="btn btn-info" type="button">Projection Fertig!</button><br><br>';
+    } else if (renaming) {
+      h += '<h5>Schreiben Sie die neue Namen der Spalten die Sie umbenennen wollen.</h5><br><input type="text" class="input-medium search-query" id="newNameForRelation"><button onclick="renameFromInput()" class="btn btn-info" type="button">Umbenennung Fertig!</button><br><br>';
     }
 
     h += '<table class="table table-bordered table-hover table-striped">';
@@ -686,6 +722,8 @@ function updateResult(projecting) {
     expression.getColumns().each(function(c) {
         if (projecting) {
           h += '<th><input type="checkbox" id="inlineCheckbox' + c + '"><a>  ' + c + '</a></th>';
+        } else if (renaming) {
+          h += '<th><input type="text" class="form-control" id="newName' + c + '"><a>  ' + c + '</a></th>';
         } else {
           h += '<th><a href="javascript:;" onclick="handleColumn(\'' + c + '\')">' + c + '</a></th>';
         }

@@ -31,7 +31,7 @@ function getRelationsFromStorage() {
       Double parse, because localStorage reads the array as a string and the objects
       again as a string and for some reason parsing once is not enough...
     */
-    var savesAsArray = JSON.parse(JSON.parse(objectFromStorage));
+    var savesAsArray = JSON.parse(objectFromStorage);
     if (Array.isArray(savesAsArray)) {
       for (var i=0;i<savesAsArray.length;i++) {
         /*

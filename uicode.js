@@ -522,7 +522,7 @@ function renameFromInput() {
   if (input !== null) {
     value = input.value;
   }
-  if (count > 0 && count !== expression.getColumns().length) {
+  if (count > 0) {
     h = h.substring(0,h.length-1);
     if (isValidRename(h)) {
       addRename(h);

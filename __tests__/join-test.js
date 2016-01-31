@@ -1,8 +1,47 @@
-jest.dontMock('../js/data_relation.js');
-jest.dontMock('../js/expression_join.js');
+var DataRelation = require('../js/data_relation.js');
+var Join = require('../js/expression_join.js');
 
-describe('join', function() {
- it('Returns Nothing', function() {
-   expect(1).toBe(1);
- });
+function createIntColumns(length) {
+  var array = [];
+  for (var i = 0; i < length; i++) {
+    array.push(Math.floor(Math.random()*100));
+  }
+  return array;
+}
+
+function createFloatColumns(length) {
+  return createIntColumns(length).map(function(x) { return x + 0.5;});
+}
+
+function createData(rows,columns) {
+  var array = [];
+  for (var i = 0; i < length; i++) {
+    array.push(createColumns(columns));
+  }
+  return array;
+}
+
+describe('Join Result', function() {
+
+  var noOfCol = Math.floor(Math.random() * 5 + 1);
+  var noOfRows = Math.floor(Math.random() * 5 + 1);
+
+  var columns = createIntColumns(noOfCol);
+  columns.push("Data");
+  var data = createData(noOfRows, noOfCol + 1);
+  var index = Math.floor(Math.random() * noOfRows);
+  data[Number(index)][Number(noOfCol)] = "Common Data";
+  var firstRelation = new DataRelation(1,columns,data);
+
+  columns = createFloatColumns(noOfCol);
+  columns.push("Data");
+  data = createData(noOfRows,noOfCol+1);
+  index = Math.floor(Math.random() * noOfRows);
+  data[Number(index)][Number(noOfCol)] = "Common Data";
+  var secondRelation = new DataRelation(1,createFloatColumns(noOfCol).push("United"),data);
+
+  var join = new Join(firstRelation,secondRelation);
+  it('Has exactly one Result', function() {
+    expect(join.getResult().length).toBe(1);
+  });
 });

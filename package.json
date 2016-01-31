@@ -18,6 +18,12 @@
     "Algebra",
     "DB"
   ],
+  "jest": {
+    "testFileExtensions": [
+      "js"
+    ],
+    "unmockedModulePathPatterns": ["<rootDir>/js"]
+  },
   "author": "db.in.tum.de",
   "license": "MIT",
   "bugs": {

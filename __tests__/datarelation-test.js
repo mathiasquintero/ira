@@ -1,4 +1,4 @@
-jest.dontMock('../js/data_relation.js');
+var DataRelation = require('../js/data_relation.js');
 
 function createColumns(length) {
   return (new Array(length)).map(function(x) { return Math.random()*100;});
@@ -8,7 +8,7 @@ function createData(rows,columns) {
   return (new Array(rows)).map(function() { return createColumns(columns); });
 }
 
-describe('relation', function() {
+describe('DataRelation', function() {
 
   var assertions = function(relation,columns,itemsInRelation) {
     it('Holds the right data', function() {
@@ -17,7 +17,7 @@ describe('relation', function() {
     });
   };
 
-  for (var i = 0; i < 0; i++) {
+  for (var i = 0; i < 10; i++) {
     var noOfCol = Math.random() * 100 + 1;
     var noOfRows = Math.random() * 100 + 1;
     var columns = createColumns(10);

@@ -41,7 +41,7 @@ describe('Join Result', function() {
   var secondRelation = new DataRelation(1,createFloatColumns(noOfCol).push("United"),data);
 
   var join = new Join(firstRelation,secondRelation);
-  it('Has exactly one Result', function() {
+  it('has exactly one Result', function() {
     expect(join.getResult().length).toBe(1);
   });
 });

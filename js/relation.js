@@ -16,8 +16,6 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-var Block = require('../js/block.js');
-
 function Relation() {
     this.kind = Relation;
 
@@ -52,5 +50,11 @@ function Relation() {
         return "\\emptyset";
     };
 }
-Relation.prototype = new Block();
-module.exports = Relation;
+
+try {
+  var Block = require('../js/block.js');
+  Relation.prototype = new Block();
+  module.exports = Relation;
+} catch(e) {
+  Relation.prototype = new Block();
+}

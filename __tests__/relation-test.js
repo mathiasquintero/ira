@@ -2,7 +2,7 @@ var Relation = require('../js/relation.js');
 
 describe('Relation', function() {
   var rel = new Relation();
-  it('Is an empty Relation', function() {
+  it('is an empty Relation', function() {
     var res = rel.getResult();
     var col = rel.getColumns();
     var name = rel.getName();

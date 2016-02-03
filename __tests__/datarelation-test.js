@@ -11,7 +11,7 @@ function createData(rows,columns) {
 describe('DataRelation', function() {
 
   var assertions = function(relation,columns,itemsInRelation) {
-    it('Holds the right data', function() {
+    it('holds the right data', function() {
       expect(relation.getColumns()).toBe(columns);
       expect(relation.getResult()).toBe(itemsInRelation);
     });

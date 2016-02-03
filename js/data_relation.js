@@ -16,7 +16,7 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-var Relation = require('../js/relation.js');
+
 
 function DataRelation(name, columns, data, expr) {
     this.name = name;
@@ -55,5 +55,11 @@ function DataRelation(name, columns, data, expr) {
     };
 
 }
-DataRelation.prototype = new Relation();
-module.exports = DataRelation;
+
+try {
+  var Relation = require('../js/relation.js');
+  DataRelation.prototype = new Relation();
+  module.exports = DataRelation;
+} catch(e) {
+  DataRelation.prototype = new Relation();
+}

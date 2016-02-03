@@ -16,8 +16,6 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-var Relation = require('../js/relation.js');
-
 function Join(input1, input2) {
     this.leftOuter = false;
     this.rightOuter = false;
@@ -169,5 +167,11 @@ function Join(input1, input2) {
         return "(" + this.input1.toLatex(options) + "\\bowtie " + this.input2.toLatex(options) + ")";
     };
 }
-Join.prototype = new Relation();
-module.exports = Join;
+
+try {
+  var Relation = require('../js/relation.js');
+  Join.prototype = new Relation();
+  module.exports = Join;
+} catch(e) {
+  Join.prototype = new Relation();
+}

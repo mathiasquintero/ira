@@ -170,3 +170,4 @@ function Join(input1, input2) {
     };
 }
 Join.prototype = new Relation();
+module.exports = Join;

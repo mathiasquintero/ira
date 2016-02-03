@@ -15,8 +15,8 @@ function createFloatColumns(length) {
 
 function createData(rows,columns) {
   var array = [];
-  for (var i = 0; i < length; i++) {
-    array.push(createColumns(columns));
+  for (var i = 0; i < rows; i++) {
+    array.push(createIntColumns(columns));
   }
   return array;
 }
@@ -30,14 +30,14 @@ describe('Join Result', function() {
   columns.push("Data");
   var data = createData(noOfRows, noOfCol + 1);
   var index = Math.floor(Math.random() * noOfRows);
-  data[Number(index)][Number(noOfCol)] = "Common Data";
+  data[index][noOfCol] = "Common Data";
   var firstRelation = new DataRelation(1,columns,data);
 
   columns = createFloatColumns(noOfCol);
   columns.push("Data");
   data = createData(noOfRows,noOfCol+1);
   index = Math.floor(Math.random() * noOfRows);
-  data[Number(index)][Number(noOfCol)] = "Common Data";
+  data[index][noOfCol] = "Common Data";
   var secondRelation = new DataRelation(1,createFloatColumns(noOfCol).push("United"),data);
 
   var join = new Join(firstRelation,secondRelation);

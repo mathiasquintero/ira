@@ -1,16 +1,19 @@
+jest.dontMock('../lib/jquery-1.3.2.js');
+jest.dontMock('../lib/prototype.js');
+
 var DataRelation = require('../js/data_relation.js');
 var Join = require('../js/expression_join.js');
 
 function createIntColumns(length) {
   var array = [];
   for (var i = 0; i < length; i++) {
-    array.push(Math.floor(Math.random()*100));
+    array.push(Math.floor(Math.random()*100).toString());
   }
   return array;
 }
 
 function createFloatColumns(length) {
-  return createIntColumns(length).map(function(x) { return x + 0.5;});
+  return createIntColumns(length).map(function(x) { return x + ".5";});
 }
 
 function createData(rows,columns) {
@@ -38,8 +41,7 @@ describe('Join Result', function() {
   data = createData(noOfRows,noOfCol+1);
   index = Math.floor(Math.random() * noOfRows);
   data[index][noOfCol] = "Common Data";
-  var secondRelation = new DataRelation(1,createFloatColumns(noOfCol).push("United"),data);
-
+  var secondRelation = new DataRelation(1,columns,data);
   var join = new Join(firstRelation,secondRelation);
   it('has exactly one Result', function() {
     expect(join.getResult().length).toBe(1);

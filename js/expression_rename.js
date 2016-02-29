@@ -15,6 +15,13 @@ GNU Affero General Public License for more details.
 You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
+function each(arr, f) {
+  for (var i = 0; i<arr.length;i++) {
+    f(arr[i],i);
+  }
+}
+
 function Rename(renames, input) {
     this.setChildren([input]);
 
@@ -35,21 +42,20 @@ function Rename(renames, input) {
     this.getColumns = function() {
         var cols = this.input.getColumns();
         var pcols = this.renames.split(",");
-
-        if (renames.match("<-")) {
-            var r = new Hash();
+        if (renames.indexOf("<-")>=0) {
+            var r = {};
 
             // figure out renames
-            pcols.each(function(c) {
+            each(pcols,function(c) {
                 var parts = c.split("<-");
-                r.set(parts[1], parts[0]);
+                r[parts[1]] = parts[0];
             });
 
             // rename columns
             var newcols = [];
-            cols.each(function(c) {
-                if (r.get(c)) {
-                    newcols.push(r.get(c));
+            each(cols,function(c) {
+                if (r[c]) {
+                    newcols.push(r[c]);
                 } else {
                     newcols.push(c);
                 }
@@ -85,4 +91,11 @@ function Rename(renames, input) {
         return "\\rho_{" + lcol + "}" + input.toLatex(options);
     };
 }
-Rename.prototype = new Relation();
+
+try {
+  var Relation = require('../js/relation.js');
+  Rename.prototype = new Relation();
+  module.exports = Rename;
+} catch(e) {
+  Rename.prototype = new Relation();
+}

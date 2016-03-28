@@ -1,12 +1,7 @@
 var DataRelation = require('../js/data_relation.js');
-
-function createColumns(length) {
-  return (new Array(length)).map(function(x) { return Math.random()*100;});
-}
-
-function createData(rows,columns) {
-  return (new Array(rows)).map(function() { return createColumns(columns); });
-}
+var createColumns = require('../test-env/createColumns.js');
+var createData = require('../test-env/createData.js');
+require('../test-env/TestPrototype.js')();
 
 describe('DataRelation', function() {
 

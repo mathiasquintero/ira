@@ -1,27 +1,10 @@
 var DataRelation = require('../js/data_relation.js');
 var Union = require('../js/expression_union.js');
-
-function createIntColumns(length) {
-  var array = [];
-  for (var i = 0; i < length; i++) {
-    var r;
-    do {
-      r = Math.floor(Math.random()*100).toString();
-    } while(!array.reduce(function(r,i) {
-      return r && i !== r;
-    }, true));
-    array.push(r);
-  }
-  return array;
-}
-
-function createColumns(length) {
-  return (new Array(length)).map(function(x) { return Math.random()*100;});
-}
-
-function createData(rows,columns) {
-  return (new Array(rows)).map(function() { return createColumns(columns); });
-}
+var createIntColumns = require('../test-env/createIntColumns.js');
+var createColumns = require('../test-env/createColumns.js');
+var createData = require('../test-env/createData.js');
+var prototype = require('../test-env/TestPrototype.js');
+prototype();
 
 describe('Union', function() {
 

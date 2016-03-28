@@ -16,12 +16,6 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-function each(arr, f) {
-  for (var i = 0; i<arr.length;i++) {
-    f(arr[i],i);
-  }
-}
-
 function Rename(renames, input) {
     this.setChildren([input]);
 
@@ -46,14 +40,14 @@ function Rename(renames, input) {
             var r = {};
 
             // figure out renames
-            each(pcols,function(c) {
+            pcols.each(function(c) {
                 var parts = c.split("<-");
                 r[parts[1]] = parts[0];
             });
 
             // rename columns
             var newcols = [];
-            each(cols,function(c) {
+            cols.each(function(c) {
                 if (r[c]) {
                     newcols.push(r[c]);
                 } else {

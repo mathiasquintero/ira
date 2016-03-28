@@ -22,7 +22,10 @@
     "testFileExtensions": [
       "js"
     ],
-    "unmockedModulePathPatterns": ["<rootDir>/js"]
+    "unmockedModulePathPatterns": [
+      "<rootDir>/js",
+      "<rootDir>/test-env"
+    ]
   },
   "author": "db.in.tum.de",
   "license": "MIT",

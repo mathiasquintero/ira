@@ -16,12 +16,6 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-function each(arr, f) {
-  for (var i = 0; i<arr.length;i++) {
-    f(arr[i],i);
-  }
-}
-
 function Join(input1, input2) {
     this.leftOuter = false;
     this.rightOuter = false;
@@ -73,9 +67,9 @@ function Join(input1, input2) {
         // find natural join columns
         var joincolumns = [];
 
-        each(col1, function(c1) {
+        col1.each(function(c1) {
             var data1 = c1.split(".");
-            each(col2, function(c2) {
+            col2.each(function(c2) {
                 var data2 = c2.split(".");
                 if (data1[data1.length-1] == data2[data2.length-1]) {
                     joincolumns.push([c1,c2]);
@@ -92,11 +86,11 @@ function Join(input1, input2) {
         // build result
         var rights_added = {};
         var left_outer = this.leftOuter;
-        each(rel1,function(row1) {
+        rel1.each(function(row1) {
             var left_added = false;
-            each(rel2,function(row2, nr) {
+            rel2.each(function(row2, nr) {
                 var good = true;
-                each(joincolumns,function(c) {
+                joincolumns.each(function(c) {
                     if (row1[col1.indexOf(c[0])] != row2[col2.indexOf(c[1])]) {
                         good = false;
                     }
@@ -104,7 +98,7 @@ function Join(input1, input2) {
 
                 if (good) {
                     var newrow = row1.slice(0);
-                    each(col2,function(c, nr) {
+                    col2.each(function(c, nr) {
                         if (!isInJoin(c)) {
                             newrow.push(row2[nr]);
                         }
@@ -129,7 +123,7 @@ function Join(input1, input2) {
         // right outer join addon
 		var columns = this.getColumns();
         if (this.rightOuter) {
-            each(rel2,function(row2, nr) {
+            rel2.each(function(row2, nr) {
                 if (!rights_added[nr]) {
                     var newrow = [];
 					// add left-hand columns

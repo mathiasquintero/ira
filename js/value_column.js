@@ -35,4 +35,11 @@ function ValueColumn(col) {
         return '\\textrm{' + this.column.gsub("_", "\\_") + '}';
     };
 }
-ValueColumn.prototype = new Value();
+
+try {
+  var Value = require('./value.js');
+  ValueColumn.prototype = new Value();
+  module.exports = ValueColumn;
+} catch (e) {
+  ValueColumn.prototype = new Value();
+}

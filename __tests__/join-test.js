@@ -22,8 +22,8 @@ describe('Join Result', function() {
     expect(join.getResult().length).toBe(noOfPairs);
   };
   for (var i = 0; i < 10; i++) {
-    var noOfCol = Math.floor(Math.random() * 100 + 1);
-    var noOfRows = Math.floor(Math.random() * 100 + 1);
+    var noOfCol = Math.floor(Math.random() * 20 + 1);
+    var noOfRows = Math.floor(Math.random() * 20 + 1);
     noOfPairs = Math.min(i,noOfRows);
     var rel1 = createRelation(noOfCol,noOfRows,true,noOfPairs);
     var rel2 = createRelation(noOfCol,noOfRows,false,noOfPairs);

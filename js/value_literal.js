@@ -34,4 +34,11 @@ function ValueLiteral(lit) {
         return "'\\textrm{" + this.literal + "}'";
     };
 }
-ValueLiteral.prototype = new Value();
+
+try {
+  var Value = require('./value.js');
+  ValueLiteral.prototype = new Value();
+  module.exports = ValueLiteral;
+} catch (e) {
+  ValueLiteral.prototype = new Value();
+}

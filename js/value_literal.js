@@ -20,18 +20,18 @@ function ValueLiteral(lit) {
 
     this.copy = function() {
         return new ValueLiteral(lit);
-    }
+    };
 
     this.toJS = function() {
         return "\"" + this.literal + "\"";
-    }
+    };
 
     this.toHTML = function(options) {
         return "'" + this.literal + "'";
-    }
+    };
 
     this.toLatex = function(options) {
         return "'\\textrm{" + this.literal + "}'";
-    }
+    };
 }
-ValueLiteral.prototype = new Value;
+ValueLiteral.prototype = new Value();
